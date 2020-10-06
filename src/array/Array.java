@@ -4,6 +4,10 @@ package array;
  * @author litblue
  * @version 1.0.0
  * @time 2020/9/21  13:28
+ *
+ * 数组的 CURD 操作
+ * 数据类型以 int  为例
+ *
  */
 public class Array {
 
