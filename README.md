@@ -1,4 +1,4 @@
-# 笔记移步 wiki
+# [笔记移步 wiki](https://github.com/litblue/algorithm-java/wiki)
 
 
 
