@@ -1,8 +1,6 @@
 package linkedlist;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -25,7 +23,7 @@ public class SingleLinkedList implements Serializable {
      * 结点
      */
     public static class Node {
-        private int data;
+        private final int data;
         private Node next;
 
         public Node(int data, Node next){
@@ -58,11 +56,8 @@ public class SingleLinkedList implements Serializable {
         // 新结点的next指向head，新结点作为头结点
         if (head != null){
             newNode.next = head;
-            head = newNode;
-        } else {
-            // 若为空链表，则新结点作为头结点
-            head = newNode;
         }
+        head = newNode;
     }
 
     /**
@@ -72,6 +67,7 @@ public class SingleLinkedList implements Serializable {
      */
     public void insertTail(int value){
         Node newNode = createNode(value);
+
         // 空链表，可以插入新的结点作为head
         if (head == null){
             head = newNode;
@@ -83,17 +79,6 @@ public class SingleLinkedList implements Serializable {
             newNode.next = q.next;
             q.next = newNode;
         }
-    }
-
-    /**
-     * 带头结点的 插入操作
-     *
-     * @param value 插入值
-     */
-    public void insertWithHead(int value){
-        Node newNode = createNode(value);
-        head.data = ++size;
-        head.next = newNode;
     }
 
     /**
@@ -111,18 +96,76 @@ public class SingleLinkedList implements Serializable {
         }
 
         Node q = head;
+        // 遍历到p的前一个结点
         while ( q!=null && q.next != p){
             q = q.next;
         }
-
-        if (q != null) {
-            return;
-        } else {
-            q.next = q.next.next;
-        }
+        q.next = p.next;
     }
 
+    /**
+     * 可重复删除指定value值的结点
+     * @param value
+     */
+    public void deleteByValue(Integer value){
+       if (head == null){
+           throw new NoSuchElementException();
+       }
 
+       // 如果头结点就是要删除的值
+       if (head.next != null && head.data == value){
+           head = head.next;
+       }
+
+       Node q = head;
+       while (q != null){
+           if (q.next.data == value){
+                q.next = q.next.next;
+           }
+           q = q.next;
+       }
+    }
+
+    /**
+     * 判断是不是 回文
+     * @return
+     */
+    public boolean palindrome(){
+        if (head == null){
+            return false;
+        }
+
+        Node p = head;
+        Node q = head;
+        // 只有一个元素
+        if (p.next == null){
+            return false;
+        }
+
+
+
+        return true;
+    }
+
+    /**
+     * 链表逆转
+     */
+    public Node reverseLinkedList(Node p){
+        Node pre = null;
+        Node q = head;
+        Node next = null;
+
+        while (q != p){
+            next = q.next;
+
+            q.next = pre;
+            pre = q;
+            q= next;
+        }
+
+        q.next = pre;
+        return q;
+    }
 
     /**
      * 打印
@@ -134,7 +177,6 @@ public class SingleLinkedList implements Serializable {
             p = p.next;
         }
         System.out.println();
-
     }
 
     /**
@@ -144,18 +186,17 @@ public class SingleLinkedList implements Serializable {
     public static void main(String[] args) {
         SingleLinkedList singleLinkedList = new SingleLinkedList();
 
-        int[] data = new int[]{12,34,45,65,767,67,68};
+        int[] data = new int[]{12,34,45,65,767,67,68,65};
 
-
+        // 测试添加
         for (int datum : data) {
-//            singleLinkedList.insertToHead(datum);
             singleLinkedList.insertTail(datum);
         }
 
+        // 测试 根据值 重复删除
+        singleLinkedList.deleteByValue(65);
 
-        List list = new LinkedList();
-
-        list.add(12);
+        // 打印
         singleLinkedList.print();
     }
 }
